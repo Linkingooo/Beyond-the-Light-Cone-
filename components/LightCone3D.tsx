@@ -4,6 +4,9 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Line } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
+import { installWebGLShim } from "./webglShim";
+
+installWebGLShim();
 
 function ConeMesh({
   color,
@@ -155,7 +158,16 @@ export default function LightCone3D() {
   return (
     <div className="glass overflow-hidden">
       <div className="aspect-[16/10] w-full bg-cosmos-deep">
-        <Canvas dpr={[1, 1.5]} camera={{ position: [4.5, 3.2, 4.5], fov: 50 }}>
+        <Canvas
+          dpr={[1, 1.5]}
+          camera={{ position: [4.5, 3.2, 4.5], fov: 50 }}
+          gl={{
+            precision: "mediump",
+            powerPreference: "default",
+            antialias: true,
+            failIfMajorPerformanceCaveat: false,
+          }}
+        >
           <ambientLight intensity={0.6} />
           <pointLight position={[5, 5, 5]} intensity={0.8} />
           <SpinningGroup>

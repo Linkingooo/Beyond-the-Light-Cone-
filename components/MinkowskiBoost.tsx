@@ -3,6 +3,9 @@
 import { Canvas } from "@react-three/fiber";
 import { Line, OrthographicCamera } from "@react-three/drei";
 import { useMemo, useState } from "react";
+import { installWebGLShim } from "./webglShim";
+
+installWebGLShim();
 
 const RANGE = 5;
 const GRID_STEP = 1;
@@ -180,7 +183,15 @@ export default function MinkowskiBoost() {
   return (
     <div className="glass overflow-hidden">
       <div className="relative aspect-[4/3] w-full bg-cosmos-deep">
-        <Canvas dpr={[1, 1.5]}>
+        <Canvas
+          dpr={[1, 1.5]}
+          gl={{
+            precision: "mediump",
+            powerPreference: "default",
+            antialias: true,
+            failIfMajorPerformanceCaveat: false,
+          }}
+        >
           <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={50} />
           <Diagram beta={beta} />
         </Canvas>
