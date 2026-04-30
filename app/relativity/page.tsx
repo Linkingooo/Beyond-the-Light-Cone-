@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import SectionHeader from "@/components/SectionHeader";
 import ConceptList from "@/components/ConceptList";
 import TimeDilation from "@/components/TimeDilation";
+import WebGLBoundary from "@/components/WebGLBoundary";
 
 const MinkowskiBoost = dynamic(() => import("@/components/MinkowskiBoost"), {
   ssr: false,
@@ -160,7 +161,9 @@ export default function RelativityPage() {
           accent="relativity"
         />
         <div className="mt-10">
-          <MinkowskiBoost />
+          <WebGLBoundary label="Minkowski Boost">
+            <MinkowskiBoost />
+          </WebGLBoundary>
         </div>
       </section>
 
@@ -186,7 +189,9 @@ export default function RelativityPage() {
           accent="relativity"
         />
         <div className="mt-10">
-          <LightCone3D />
+          <WebGLBoundary label="Light Cone 3D">
+            <LightCone3D />
+          </WebGLBoundary>
         </div>
       </section>
 
