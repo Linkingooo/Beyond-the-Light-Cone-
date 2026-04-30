@@ -1,7 +1,26 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import SectionHeader from "@/components/SectionHeader";
 import ConceptList from "@/components/ConceptList";
 import TimeDilation from "@/components/TimeDilation";
+
+const MinkowskiBoost = dynamic(() => import("@/components/MinkowskiBoost"), {
+  ssr: false,
+  loading: () => <CanvasFallback label="加载 Minkowski 时空图…" />,
+});
+
+const LightCone3D = dynamic(() => import("@/components/LightCone3D"), {
+  ssr: false,
+  loading: () => <CanvasFallback label="加载 3D 光锥…" />,
+});
+
+function CanvasFallback({ label }: { label: string }) {
+  return (
+    <div className="glass flex aspect-[4/3] items-center justify-center text-sm text-white/50">
+      {label}
+    </div>
+  );
+}
 
 export const metadata: Metadata = {
   title: "相对论",
@@ -132,6 +151,19 @@ export default function RelativityPage() {
         </div>
       </section>
 
+      {/* Minkowski boost (WebGL) */}
+      <section className="mt-20">
+        <SectionHeader
+          eyebrow="WebGL · Lorentz Boost"
+          title="坐标轴的剪刀变换"
+          description="拖动 β 滑块，看 S' 系的 ct' 与 x' 轴如何向 45° 光锥靠拢 —— 这就是 Lorentz 变换的几何形状。"
+          accent="relativity"
+        />
+        <div className="mt-10">
+          <MinkowskiBoost />
+        </div>
+      </section>
+
       {/* General relativity */}
       <section className="mt-20">
         <SectionHeader
@@ -145,91 +177,16 @@ export default function RelativityPage() {
         </div>
       </section>
 
-      {/* Light cone */}
+      {/* Light cone (WebGL 3D) */}
       <section className="mt-20">
-        <div className="glass relative overflow-hidden p-10 sm:p-14">
-          <div className="absolute inset-0 bg-lightcone opacity-10" />
-          <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.4em] text-cosmos-relativity">
-                Light Cone
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                光锥定义了你的因果
-              </h2>
-              <p className="mt-4 text-white/70">
-                在时空图里，任何事件都拥有一个过去光锥与未来光锥。只有光锥之内的事件，才能与你建立因果联系
-                —— 因为信号最快也只能以光速传播。
-              </p>
-              <p className="mt-3 text-white/55">
-                光锥之外的事件，对你而言既不是过去也不是未来 ——
-                那是「类空相隔」。本网站的名字，正是来自这一边界。
-              </p>
-            </div>
-            <div className="flex items-center justify-center">
-              <svg
-                viewBox="0 0 240 240"
-                className="h-56 w-56 text-cosmos-relativity"
-                aria-hidden
-              >
-                <defs>
-                  <linearGradient id="cone" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="currentColor" stopOpacity="0.6" />
-                    <stop
-                      offset="100%"
-                      stopColor="currentColor"
-                      stopOpacity="0"
-                    />
-                  </linearGradient>
-                </defs>
-                <line
-                  x1="120"
-                  y1="0"
-                  x2="120"
-                  y2="240"
-                  stroke="rgba(255,255,255,0.2)"
-                />
-                <line
-                  x1="0"
-                  y1="120"
-                  x2="240"
-                  y2="120"
-                  stroke="rgba(255,255,255,0.2)"
-                />
-                <polygon points="120,120 0,0 240,0" fill="url(#cone)" />
-                <polygon
-                  points="120,120 0,240 240,240"
-                  fill="url(#cone)"
-                  transform="rotate(180 120 120)"
-                />
-                <circle cx="120" cy="120" r="4" fill="white" />
-                <text
-                  x="125"
-                  y="20"
-                  fontSize="10"
-                  fill="rgba(255,255,255,0.7)"
-                >
-                  future
-                </text>
-                <text
-                  x="125"
-                  y="232"
-                  fontSize="10"
-                  fill="rgba(255,255,255,0.7)"
-                >
-                  past
-                </text>
-                <text
-                  x="200"
-                  y="115"
-                  fontSize="10"
-                  fill="rgba(255,255,255,0.5)"
-                >
-                  elsewhere
-                </text>
-              </svg>
-            </div>
-          </div>
+        <SectionHeader
+          eyebrow="WebGL · Light Cone"
+          title="光锥定义了你的因果"
+          description="在时空里，任何事件都拥有一个过去与未来光锥。只有光锥之内的事件能与你建立因果联系 —— 因为信号最快也只能以光速传播。光锥之外的事件，对你而言既不是过去也不是未来，那是「类空相隔」。本网站的名字正是来自这一边界。"
+          accent="relativity"
+        />
+        <div className="mt-10">
+          <LightCone3D />
         </div>
       </section>
 
